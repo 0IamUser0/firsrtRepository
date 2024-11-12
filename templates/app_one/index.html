@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="card box-shadow m-2 form-wrap">
+                <div class="card-header text-center">
+                    <h3>Конвертер валют </h3>
+                </div>
+                <form id="form" class="p-3" action='' method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-4 mb-0">
+                            <label for="amount">Сумма*</label>
+                            <input id='amount' type="number" class="form-control" placeholder="Введите число" {% if from_nat %} value="{{ sum }}" {% endif %} name="from-amount">
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            <label for="from_curr">Отдаем*</label>
+                            <select class="form-control" id="from_curr" name="from-curr" value="{{ from_nat }}">
+                                {% for name in current %}
+                                <option value="{{ name }}" {% if from_nat == name %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4 mb-0">
+                            <label for="to-curr">Получаем*</label>
+                            <select class="form-control" id="to-curr" name="to-curr" value="{{ to_nat }}">
+                                {% for name in current %}
+                                <option value="{{ name }}" {% if to_nat == name %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    {% if converted_amount %}
+                        <div class="card col-6 p-0 m-auto">
+                            <div class="card-header text-center">
+                                    <h5>Отдаем <b>{{ from_nat }}</b> Получаем
+                                        <b>{{ to_nat }}</b></h5>
+                            </div>
+                            <div class="card-body">
+                                {{ converted_amount }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="submit-btn mt-3">
+                        <button type="submit" class="btn btn-primary">Рассчитать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
